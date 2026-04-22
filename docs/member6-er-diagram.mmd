@@ -1,0 +1,58 @@
+erDiagram
+    User ||--o{ Job : "creates"
+    User ||--o{ Resume : "has"
+    Resume ||--o{ ResumeVersion : "has"
+    Job ||--o{ JobApplication : "receives"
+    User ||--o{ JobApplication : "makes"
+    JobApplication }o--|| ResumeVersion : "uses"
+    Job ||--o{ InterviewSlot : "has slots"
+    JobApplication ||--o{ InterviewSlot : "has"
+    InterviewSlot }o--o| User : "interviewer"
+
+    User {
+        int id PK
+        string email
+        string role
+    }
+
+    Job {
+        int id PK
+        int recruiter_id FK
+        string title
+        text core_skills
+        int min_experience_years
+        string required_education
+    }
+
+    Resume {
+        int id PK
+        int candidate_id FK
+        string title
+    }
+
+    ResumeVersion {
+        int id PK
+        int resume_id FK
+        text raw_text
+        json parsed_data
+    }
+
+    JobApplication {
+        int id PK
+        int job_id FK
+        int candidate_id FK
+        int resume_version_id FK
+        float ai_score
+        json matched_skills
+        string status
+    }
+
+    InterviewSlot {
+        int id PK
+        int job_id FK
+        int application_id FK
+        int interviewer_id FK
+        string stage
+        string final_decision
+        datetime scheduled_start
+    }
