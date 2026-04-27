@@ -1,0 +1,7 @@
+role,job_requirements,resume_text,label
+Python Developer,"Python, Django, REST API, PostgreSQL, Docker","Expert Python developer with 5 years experience in Django and REST APIs. Proficient in Docker and SQL.",1
+Python Developer,"Python, Django, REST API, PostgreSQL, Docker","React frontend developer with some knowledge of Javascript and CSS. No Python experience.",0
+Data Scientist,"Python, Machine Learning, Scikit-learn, Pandas, Statistics","Data scientist with background in statistics. Skilled in Python, Scikit-learn, and Pandas for ML.",1
+Data Scientist,"Python, Machine Learning, Scikit-learn, Pandas, Statistics","Marketing manager with 10 years experience in sales and digital advertising.",0
+Frontend Engineer,"React, Vue, CSS, Tailwind, Javascript","Frontend expert specializing in React and modern CSS frameworks like Tailwind.",1
+Frontend Engineer,"React, Vue, CSS, Tailwind, Javascript","Backend engineer focused on Java Spring Boot and microservices architecture.",0

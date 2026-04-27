@@ -1,0 +1,55 @@
+flowchart TB
+    subgraph React["React Frontend"]
+        Login[User Login]
+        Candidate[Candidate Dashboard]
+        Recruiter[Recruiter Dashboard]
+        InterviewUI[Interview Slot UI]
+        BillsUI[Payment Bills UI]
+        RankingUI[Ranking UI]
+        CareerHubUI[Career Hub UI]
+    end
+
+    subgraph Backend["Django REST API"]
+        Auth[Auth / JWT]
+        JobsAPI[Job Management API]
+        ResumeAPI[Resume API]
+        InterviewAPI[Interviews API]
+        BillingAPI[Billing API]
+        CareerAPI[Career Hub API]
+    end
+
+    subgraph AIML["AIML Core"]
+        M1[Text Pipeline]
+        M2[Profile Extractor]
+        M3[Similarity Models]
+        M4[Scoring Model]
+        M5[Evaluation]
+        M6[Match Analytics]
+    end
+
+    subgraph DB["Database"]
+        Tables[(User, Job, Resume, JobApplication, InterviewSlot, CareerResource, CareerSession)]
+    end
+
+    Login --> Auth
+    Candidate --> JobsAPI
+    Candidate --> ResumeAPI
+    Candidate --> RankingUI
+    RankingUI --> JobsAPI
+    Recruiter --> JobsAPI
+    InterviewUI --> InterviewAPI
+    BillsUI --> BillingAPI
+    CareerHubUI --> CareerAPI
+    JobsAPI --> M1
+    M1 --> M2
+    M2 --> M3
+    M3 --> M4
+    M4 --> M5
+    M5 --> M6
+    M6 --> JobsAPI
+    Auth --> Tables
+    JobsAPI --> Tables
+    ResumeAPI --> Tables
+    InterviewAPI --> Tables
+    BillingAPI --> Tables
+    CareerAPI --> Tables

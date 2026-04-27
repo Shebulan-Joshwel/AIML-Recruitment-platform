@@ -1,0 +1,376 @@
+.landing {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  color: #111827;
+  overflow-x: hidden;
+}
+
+.landing-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1.2rem 2.4rem;
+}
+
+.landing-nav {
+  position: absolute;
+  right: 2rem;
+  top: 1rem;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.landing-nav-btn {
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid #111827;
+  background: #111827;
+  color: #f9fafb;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(15, 23, 42, 0.4);
+}
+
+.landing-nav-btn.primary {
+  border-color: #ffd700;
+  background: #ffd700;
+  color: #111827;
+  box-shadow: 0 0 18px rgba(255, 215, 0, 0.7);
+}
+
+.landing-main {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  gap: 3rem;
+  padding: 3.5rem 4rem 3.5rem;
+}
+
+.landing-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 640px;
+  gap: 1.75rem;
+}
+
+.landing-logo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  opacity: 0;
+  animation: fadeInUp 700ms ease-out forwards;
+}
+
+.landing-logo-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  position: relative;
+}
+
+.sigil-orb {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(17, 24, 39, 0.5) 0, transparent 65%);
+  box-shadow: 0 0 32px rgba(15, 23, 42, 0.7);
+  border: 2px solid rgba(5, 3, 8, 0.9);
+  animation: floatLogo 9000ms ease-in-out infinite;
+  overflow: hidden;
+}
+
+.landing-logo-img {
+  position: absolute;
+  inset: 16px;
+  width: auto;
+  height: auto;
+  max-width: calc(100% - 32px);
+  max-height: calc(100% - 32px);
+  object-fit: contain;
+}
+
+.landing-logo-text {
+  font-family: "Press Start 2P", system-ui, sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.4rem;
+  border-radius: 999px;
+  border: 2px solid #111827;
+  background: #ffd700;
+  color: #111827;
+  box-shadow: 0 0 26px rgba(255, 215, 0, 0.9);
+}
+
+.landing-hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+  max-width: 640px;
+  text-align: left;
+  opacity: 0;
+  animation: fadeInUp 800ms ease-out forwards;
+  animation-delay: 120ms;
+}
+
+.landing-hero h1 {
+  font-size: 2.5rem;
+  line-height: 1.15;
+  margin: 0;
+  letter-spacing: 0.01em;
+  color: #111827;
+}
+
+.landing-hero h1 span {
+  display: block;
+  color: #ffd700;
+}
+
+.landing-tagline {
+  margin: 0;
+  font-size: 0.98rem;
+  color: #4b5563;
+  max-width: 560px;
+}
+
+.landing-highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.landing-highlight {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fadeInUp 600ms ease-out forwards;
+}
+
+.landing-highlight h3 {
+  margin: 0 0 0.1rem;
+  font-size: 0.95rem;
+  color: #111827;
+}
+
+.landing-highlight p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+.dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  margin-top: 0.2rem;
+}
+
+.dot-green {
+  background: #22c55e;
+}
+
+.dot-yellow {
+  background: #ffd700;
+}
+
+.dot-blue {
+  background: #4b5563;
+}
+
+.landing-auth {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 1.9rem 1.9rem 1.7rem;
+  border: 1px solid rgba(255, 215, 0, 0.85);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.45);
+  color: #111827;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fadeInUp 500ms ease-out forwards;
+  animation-delay: 160ms;
+}
+
+.auth-card h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.4rem;
+}
+
+.auth-subtitle {
+  margin: 0 0 1.4rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.auth-card .field {
+  margin-bottom: 0.9rem;
+}
+
+.auth-card label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  font-size: 0.95rem;
+  color: #111827;
+}
+
+.auth-card input:focus {
+  outline: none;
+  border-color: #facc15;
+  box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.25);
+}
+
+.role-field .role-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.role-option {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  border: 2px solid #e5e7eb;
+  cursor: pointer;
+}
+
+.role-option.active {
+  border-color: #facc15;
+  background: #fef9c3;
+}
+
+.role-option input {
+  margin: 0;
+}
+
+.role-label {
+  font-weight: 600;
+  color: #111827;
+}
+
+.role-desc {
+  font-size: 0.8rem;
+  color: #6b7280;
+  width: 100%;
+  margin-left: 1.5rem;
+}
+
+.error {
+  margin: 0 0 0.8rem;
+  font-size: 0.85rem;
+  color: #b91c1c;
+}
+
+.auth-submit {
+  width: 100%;
+  padding: 0.7rem;
+  margin-top: 0.15rem;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: #16a34a;
+  cursor: pointer;
+  box-shadow: 0 14px 34px rgba(22, 163, 74, 0.55);
+}
+
+.auth-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.auth-submit:not(:disabled):hover {
+  transform: translateY(-1px);
+  background: #16a34a;
+  box-shadow: 0 18px 40px rgba(22, 163, 74, 0.7);
+}
+
+.auth-toggle {
+  margin: 1.1rem 0 0;
+  font-size: 0.85rem;
+  color: #6b7280;
+  text-align: center;
+}
+
+.auth-toggle .link {
+  background: none;
+  border: none;
+  color: #111827;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+  text-decoration: underline;
+}
+
+.auth-toggle .link:hover {
+  color: #111827;
+}
+
+@keyframes floatLogo {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 960px) {
+  .landing-main {
+    padding: 1.5rem 1.5rem 2rem;
+  }
+
+  .landing-auth {
+    justify-content: flex-start;
+    margin-top: 1rem;
+  }
+}

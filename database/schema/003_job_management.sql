@@ -1,0 +1,3 @@
+-- Step 3: Job Description Management
+-- Jobs posted by recruiters; active/inactive; structured for AIML
+-- Tables created via Django migrations: job_management_job
