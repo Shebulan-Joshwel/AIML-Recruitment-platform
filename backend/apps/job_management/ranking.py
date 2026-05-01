@@ -41,9 +41,15 @@ def _compute_similarity(job_text: str, resumes: List[str]) -> List[float]:
     return compute_tfidf_similarity(job_text, resumes)
 
 
-def rank_applications_for_job(job: Job, applications: List[JobApplication]) -> List[JobApplication]:
+def rank_applications_for_job(
+    job: Job,
+    applications: List[JobApplication],
+    similarity_weight: float = 1.0,
+    coverage_weight: float = 0.15
+) -> List[JobApplication]:
     """
     Compute ai_score, ai_rank, predicted_label and matched_skills for each application of a job.
+    Uses similarity_weight and coverage_weight for scoring.
     Returns applications sorted by descending score.
     """
     if not applications:
@@ -62,21 +68,28 @@ def rank_applications_for_job(job: Job, applications: List[JobApplication]) -> L
     required_tokens = {s for s in required_skills}
 
     scored: List[Tuple[JobApplication, float]] = []
+    # If weights are defaults, we can optionally use the learned model.
+    # But the user specifically asked to use given weights for re-ranking.
+    use_learned_model = (similarity_weight == 1.0 and coverage_weight == 0.15)
     model_path = Path(__file__).resolve().parent / "aiml_core" / "models" / "scoring_lr.pkl"
+
     for app, base, raw_resume in zip(applications, base_scores, resume_texts):
         tokens = set(raw_resume.split())
         matched = sorted([s for s in required_tokens if all(tok in tokens for tok in s.split())])
         coverage = len(matched) / max(1, len(required_tokens))
-        coverage_boost = 0.15 * coverage
-        heuristic_score = float(min(1.0, base + coverage_boost))
 
-        # Optionally rescore with a small learned model if available on disk.
-        score = maybe_score_with_learned_model(
-            sim=base,
-            coverage=coverage,
-            fallback_score=heuristic_score,
-            model_path=model_path,
-        )
+        if use_learned_model:
+            heuristic_score = float(min(1.0, base + (0.15 * coverage)))
+            score = maybe_score_with_learned_model(
+                sim=base,
+                coverage=coverage,
+                fallback_score=heuristic_score,
+                model_path=model_path,
+            )
+        else:
+            # Manual weighted sum as requested by user
+            score = (similarity_weight * base) + (coverage_weight * coverage)
+
         app.matched_skills = matched
         scored.append((app, score))
 

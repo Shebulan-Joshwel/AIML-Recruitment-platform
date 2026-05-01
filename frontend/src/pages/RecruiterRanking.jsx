@@ -6,8 +6,10 @@ import {
   getMySubscription,
   rankCandidates,
   getJobs,
-  askRecruiterRAG,
+  recalculateRanking,
+  clearRanking,
 } from '../services/api';
+import NotificationDropdown from '../components/NotificationDropdown';
 import './Dashboard.css';
 import './RecruiterDashboard.css';
 import './RecruiterRanking.css';
@@ -21,21 +23,49 @@ export default function RecruiterRanking() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [hasSub, setHasSub] = useState(false);
-  const [ragSummary, setRagSummary] = useState({ appId: null, answer: '', loading: false });
-  const backendOrigin = import.meta.env?.VITE_BACKEND_ORIGIN || 'http://localhost:8000';
+  const [similarityWeight, setSimilarityWeight] = useState(100);
+  const [coverageWeight, setCoverageWeight] = useState(15);
+  const [actionLoading, setActionLoading] = useState(false);
 
-  async function handleAISummary(app) {
-    setRagSummary({ appId: app.id, answer: '', loading: true });
+  async function handleReRank() {
     try {
-      const data = await askRecruiterRAG('candidate_summary', jobId, app.id);
-      setRagSummary((s) => ({ ...s, answer: data.answer || '', loading: false }));
+      setActionLoading(true);
+      setError('');
+      const ranked = await recalculateRanking(jobId, {
+        similarity_weight: similarityWeight,
+        coverage_weight: coverageWeight,
+      });
+      setCandidates(ranked || []);
     } catch (e) {
-      setRagSummary((s) => ({ ...s, answer: e.message || 'Failed to load summary', loading: false }));
+      setError(e.message || 'Failed to re-rank candidates');
+    } finally {
+      setActionLoading(false);
     }
   }
 
-  function closeRagModal() {
-    setRagSummary({ appId: null, answer: '', loading: false });
+  async function handleClearRanking() {
+    if (!window.confirm('Are you sure you want to clear all ranking data for this job? This cannot be undone.')) {
+      return;
+    }
+    try {
+      setActionLoading(true);
+      setError('');
+      await clearRanking(jobId);
+      // Refresh local state
+      setCandidates((prev) =>
+        prev.map((c) => ({
+          ...c,
+          ai_score: null,
+          ai_rank: null,
+          predicted_label: '',
+        }))
+      );
+      alert('Ranking data cleared.');
+    } catch (e) {
+      setError(e.message || 'Failed to clear ranking');
+    } finally {
+      setActionLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -74,6 +104,11 @@ export default function RecruiterRanking() {
     navigate('/', { replace: true });
   }
 
+  const handleViewCV = (url) => {
+    if (!url) return;
+    window.open(url, '_blank');
+  };
+
   return (
     <div className="dashboard">
       <header className="dashboard-header">
@@ -105,6 +140,7 @@ export default function RecruiterRanking() {
           </button>
         </nav>
         <div className="user-row">
+          <NotificationDropdown />
           <span className="user-info">{user?.name || user?.email}</span>
           <button type="button" className="btn-logout" onClick={handleLogout}>
             Logout
@@ -164,110 +200,124 @@ export default function RecruiterRanking() {
           {error && hasSub && <p className="ranking-error">{error}</p>}
 
           {hasSub && (
-            <div className="ranking-table-card">
-              <div className="ranking-table-header">
-                <h3>Ranked candidates</h3>
-                <p className="small">
-                  Scores are based on resume–JD similarity and how well required skills are covered.
-                </p>
-              </div>
-              {loading ? (
-                <p className="muted">Running AI ranking…</p>
-              ) : candidates.length === 0 ? (
-                <p className="muted">No applications yet for this role.</p>
-              ) : (
-                <div className="ranking-table-wrapper">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>AI score</th>
-                        <th>Prediction</th>
-                        <th>CV</th>
-                        <th>Status</th>
-                        <th>RAG</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {candidates.map((app, index) => (
-                        <tr key={app.id}>
-                          <td>{app.ai_rank ?? index + 1}</td>
-                          <td>{app.candidate?.name || '-'}</td>
-                          <td>{app.candidate?.email || '-'}</td>
-                          <td>{app.ai_score?.toFixed(3) ?? '-'}</td>
-                          <td>
-                            {app.predicted_label ? (
-                              <span
-                                className={`prediction-badge ${
-                                  app.predicted_label === 'RECOMMENDED'
-                                    ? 'prediction-recommended'
-                                    : app.predicted_label === 'NOT_RECOMMENDED'
-                                    ? 'prediction-not-recommended'
-                                    : ''
-                                }`}
-                              >
-                                {app.predicted_label}
-                              </span>
-                            ) : (
-                              '-'
-                            )}
-                          </td>
-                          <td>
-                            {app.resume_file_url ? (
-                              <a
-                                href={app.resume_file_url.startsWith('http')
-                                  ? app.resume_file_url
-                                  : `${backendOrigin}${app.resume_file_url}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="cv-chip"
-                              >
-                                <span className="cv-dot" aria-hidden="true" /> View CV
-                              </a>
-                            ) : (
-                              '-'
-                            )}
-                          </td>
-                          <td>{app.status}</td>
-                          <td>
-                            <button
-                              type="button"
-                              className="btn-rag-summary"
-                              onClick={() => handleAISummary(app)}
-                              disabled={ragSummary.loading}
-                              title="Get AI summary of candidate fit"
-                            >
-                              {ragSummary.loading && ragSummary.appId === app.id
-                                ? '…'
-                                : 'AI Summary'}
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  {ragSummary.appId != null && (
-                    <div className="rag-modal-overlay" onClick={closeRagModal} role="presentation">
-                      <div className="rag-modal" onClick={(e) => e.stopPropagation()}>
-                        <div className="rag-modal-header">
-                          <h4>AI candidate summary</h4>
-                          <button type="button" className="rag-modal-close" onClick={closeRagModal} aria-label="Close">×</button>
-                        </div>
-                        <div className="rag-modal-body">
-                          {ragSummary.loading ? (
-                            <p className="muted">Generating summary…</p>
-                          ) : (
-                            <p className="rag-answer">{ragSummary.answer}</p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )}
+            <>
+              <div className="ranking-controls-card">
+                <h3>Adjust ranking weights</h3>
+                <div className="weight-sliders">
+                  <div className="slider-group">
+                    <label>Similarity weight: {similarityWeight}%</label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={similarityWeight}
+                      onChange={(e) => setSimilarityWeight(parseInt(e.target.value))}
+                    />
+                    <p className="small">Weight given to overall JD–Resume text similarity.</p>
+                  </div>
+                  <div className="slider-group">
+                    <label>Coverage weight: {coverageWeight}%</label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={coverageWeight}
+                      onChange={(e) => setCoverageWeight(parseInt(e.target.value))}
+                    />
+                    <p className="small">Weight given to matching specific required skills.</p>
+                  </div>
                 </div>
-              )}
-            </div>
+                <div className="action-buttons">
+                  <button
+                    type="button"
+                    className="btn-rerank"
+                    onClick={handleReRank}
+                    disabled={actionLoading}
+                  >
+                    {actionLoading ? 'Ranking…' : 'Re-rank'}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-clear"
+                    onClick={handleClearRanking}
+                    disabled={actionLoading}
+                  >
+                    Clear Ranking
+                  </button>
+                </div>
+              </div>
+
+              <div className="ranking-table-card">
+                <div className="ranking-table-header">
+                  <h3>Ranked candidates</h3>
+                  <p className="small">
+                    Scores are based on resume–JD similarity and how well required skills are covered.
+                  </p>
+                </div>
+                {loading ? (
+                  <p className="muted">Running AI ranking…</p>
+                ) : candidates.length === 0 ? (
+                  <p className="muted">No applications yet for this role.</p>
+                ) : (
+                  <div className="ranking-table-wrapper">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>AI score</th>
+                          <th>Prediction</th>
+                          <th>CV</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {candidates.map((app, index) => (
+                          <tr key={app.id}>
+                            <td>{app.ai_rank ?? index + 1}</td>
+                            <td>{app.candidate?.name || '-'}</td>
+                            <td>{app.candidate?.email || '-'}</td>
+                            <td>{app.ai_score != null ? app.ai_score.toFixed(3) : '-'}</td>
+                            <td>
+                              {app.predicted_label ? (
+                                <span
+                                  className={`prediction-badge ${
+                                    app.predicted_label === 'RECOMMENDED'
+                                      ? 'prediction-recommended'
+                                      : app.predicted_label === 'NOT_RECOMMENDED'
+                                      ? 'prediction-not-recommended'
+                                      : ''
+                                  }`}
+                                >
+                                  {app.predicted_label}
+                                </span>
+                              ) : (
+                                '-'
+                              )}
+                            </td>
+                            <td>
+                              {app.resume_file_url ? (
+                                <button
+                                  type="button"
+                                  className="cv-chip-btn"
+                                  onClick={() => handleViewCV(app.resume_file_url)}
+                                >
+                                  <span className="cv-dot" aria-hidden="true" /> View CV
+                                </button>
+                              ) : (
+                                '-'
+                              )}
+                            </td>
+                            <td>{app.status}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            </>
           )}
         </section>
       </main>
