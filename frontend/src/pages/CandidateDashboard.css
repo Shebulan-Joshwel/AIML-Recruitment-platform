@@ -1,0 +1,453 @@
+/* Final styling pass and responsive fixes*/
+
+/* Resume section layout */
+.resume-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #f9fafb;
+  margin: 0 0 1rem;
+}
+
+/* Upload card — full width of main, light surface (matches open job cards) */
+.resume-upload-card {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid rgba(255, 215, 0, 0.85);
+  border-radius: 16px;
+  padding: 1.75rem 2rem;
+  transition:
+    box-shadow var(--aiml-transition-med),
+    border-color var(--aiml-transition-med),
+    transform var(--aiml-transition-med);
+}
+
+.resume-upload-card:hover {
+  border-color: #ffd700;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.08);
+}
+
+.upload-card-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1rem;
+  width: 100%;
+}
+
+.upload-card-inner > .upload-icon {
+  align-self: flex-start;
+}
+
+.upload-icon {
+  font-size: 2rem;
+  opacity: 0.9;
+}
+
+.resume-upload-card h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.resume-upload-card .upload-hint {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin: 0;
+}
+
+.upload-hint {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.upload-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 900px) {
+  .resume-upload-card .upload-form {
+    flex-flow: row wrap;
+    align-items: flex-end;
+    gap: 1rem 1.25rem;
+  }
+
+  .resume-upload-card .upload-form > .form-row:first-of-type {
+    flex: 1 1 240px;
+    min-width: 0;
+  }
+
+  .resume-upload-card .upload-form > .file-row {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  /* DOM: title, file, error, button — pull button before error visually */
+  .resume-upload-card .upload-form > .btn-primary {
+    flex: 0 0 auto;
+    order: 2;
+  }
+
+  .resume-upload-card .upload-form > .form-error {
+    flex: 1 0 100%;
+    order: 3;
+  }
+}
+
+.form-row {
+  width: 100%;
+}
+
+.input-title {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #111827;
+  transition: border-color 0.15s;
+}
+
+.input-title:focus {
+  outline: none;
+  border-color: #facc15;
+  box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.25);
+}
+
+.input-title::placeholder {
+  color: #9ca3af;
+}
+
+.file-row {
+  display: flex;
+  align-items: center;
+}
+
+.file-label {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.file-input {
+  position: absolute;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.file-button {
+  display: inline-block;
+  padding: 0.625rem 1rem;
+  font-size: 0.9375rem;
+  color: #374151;
+  background: #f9fafb;
+  border: 1px dashed #9ca3af;
+  border-radius: 10px;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.file-label:hover .file-button {
+  background: #f3f4f6;
+  border-color: #6b7280;
+  color: #111827;
+}
+
+.btn-primary {
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: #16a34a;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.12s ease, box-shadow 0.12s ease, transform 0.12s ease;
+  box-shadow: 0 10px 25px rgba(22, 163, 74, 0.4);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: #15803d;
+  box-shadow: 0 12px 30px rgba(22, 163, 74, 0.55);
+}
+
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.form-error {
+  font-size: 0.875rem;
+  color: #f87171;
+  margin: 0;
+}
+
+/* Resume list */
+.resume-list-section {
+  margin-top: 2rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  background: radial-gradient(circle at top, #020617 0, #000000 80%);
+  border: 1px dashed rgba(255, 215, 0, 0.75);
+  border-radius: 12px;
+  color: #e5e7eb;
+}
+
+.empty-state p {
+  margin: 0;
+}
+
+.empty-hint {
+  font-size: 0.875rem;
+  margin-top: 0.25rem !important;
+  color: #64748b;
+}
+
+/* Open jobs block sits on light dashboard main — dark headings for contrast */
+.job-list-section .section-title {
+  color: #111827;
+}
+
+.job-list-section .upload-hint {
+  color: #4b5563;
+}
+
+/* Open jobs: exactly three cards per row on desktop; equal-width columns */
+.resume-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .resume-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .resume-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.resume-card {
+  background: #ffffff;
+  border: 1px solid rgba(255, 215, 0, 0.85);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.resume-card:hover {
+  border-color: #ffd700;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.12);
+}
+
+.resume-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.resume-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  white-space: normal;
+}
+
+.version-pill {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #94a3b8;
+  background: #334155;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+}
+
+.resume-meta {
+  font-size: 0.8125rem;
+  color: #4b5563;
+  margin: 0;
+}
+
+.btn-add-version {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #facc15;
+  background: transparent;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  margin-top: auto;
+}
+
+.btn-add-version:hover {
+  background: rgba(250, 204, 21, 0.1);
+  border-color: #facc15;
+}
+
+.btn-add-version:has(input:disabled) {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.job-snippet {
+  font-size: 0.875rem;
+  color: #374151;
+  margin: 0.25rem 0 0.75rem;
+  line-height: 1.5;
+}
+
+.match-panel {
+  margin: 0.5rem 0 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(250, 204, 21, 0.65);
+  background: #f9fafb;
+}
+
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.4rem;
+}
+
+.match-overall-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9ca3af;
+}
+
+.match-overall-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.match-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.match-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: #4b5563;
+}
+
+.match-bar-outer {
+  position: relative;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.match-bar-inner {
+  position: absolute;
+  inset: 0;
+  width: 0;
+  border-radius: 999px;
+  background: #16a34a;
+}
+
+.match-bar-inner.skills {
+  background: #22c55e;
+}
+
+.match-bar-inner.education {
+  background: #facc15;
+}
+
+.match-bar-value {
+  font-variant-numeric: tabular-nums;
+}
+
+.job-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.job-card-actions .btn-secondary {
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #111827;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.jobs-message {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: #facc15;
+}
+
+.job-req-block {
+  margin: 0.5rem 0 0.75rem;
+}
+
+.job-req-heading {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin: 0 0 0.25rem;
+}
+
+.job-req-list {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.job-req-list li {
+  font-size: 0.8125rem;
+  color: #1f2937;
+  margin-bottom: 0.125rem;
+}
