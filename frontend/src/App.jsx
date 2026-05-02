@@ -7,8 +7,10 @@ import RecruiterDashboard from './pages/RecruiterDashboard'
 import CandidateInterviews from './pages/CandidateInterviews'
 import RecruiterInterviews from './pages/RecruiterInterviews'
 import CandidateCareerHub from './pages/CandidateCareerHub'
+import CandidateResumes from './pages/CandidateResumes'
 import RecruiterFinancial from './pages/RecruiterFinancial'
 import RecruiterRanking from './pages/RecruiterRanking'
+import CareerAdminLogin from './pages/CareerAdminLogin'
 
 function PrivateRoute({ children, allowedRoles }) {
   const token = getStoredToken()
@@ -55,6 +57,14 @@ export default function App() {
           }
         />
         <Route
+          path="/candidate/resumes"
+          element={
+            <PrivateRoute allowedRoles={['CANDIDATE', 'ADMIN']}>
+              <CandidateResumes />
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/recruiter"
           element={
             <PrivateRoute allowedRoles={['RECRUITER', 'ADMIN']}>
@@ -86,6 +96,7 @@ export default function App() {
             </PrivateRoute>
           }
         />
+        <Route path="/career-admin/login" element={<CareerAdminLogin />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
