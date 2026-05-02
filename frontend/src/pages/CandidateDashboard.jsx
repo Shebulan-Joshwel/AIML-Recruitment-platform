@@ -1,6 +1,7 @@
 // Resume visibility controls and expand panel added
 // Analytics tab: monthly views bar chart and status breakdown
 // Per-resume performance table added to analytics tab
+// Certificates tab with credential cards and verification status
 
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
