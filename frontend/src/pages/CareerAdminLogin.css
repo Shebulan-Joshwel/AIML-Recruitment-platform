@@ -1,0 +1,162 @@
+/* Full-page white background, card centered */
+.ca-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  padding: 2rem 1rem;
+}
+
+/* Card — matches landing page auth-card */
+.ca-card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 1.9rem 1.9rem 1.7rem;
+  border: 1px solid rgba(255, 215, 0, 0.85);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.45);
+  color: #111827;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: caFadeInUp 500ms ease-out forwards;
+  animation-delay: 80ms;
+}
+
+.ca-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.4rem;
+  color: #111827;
+}
+
+.ca-subtitle {
+  margin: 0 0 1.4rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* Error */
+.ca-error {
+  margin: 0 0 0.8rem;
+  font-size: 0.85rem;
+  color: #b91c1c;
+}
+
+/* Fields */
+.ca-field {
+  margin-bottom: 0.9rem;
+}
+
+.ca-label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+.ca-input-wrap {
+  position: relative;
+}
+
+.ca-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  font-size: 0.95rem;
+  color: #111827;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ca-input-wrap .ca-input {
+  padding-right: 2.6rem;
+}
+
+.ca-input:focus {
+  border-color: #facc15;
+  box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.25);
+}
+
+.ca-input::placeholder {
+  color: #9ca3af;
+}
+
+.ca-toggle-pass {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.1rem;
+  color: #9ca3af;
+  transition: color 0.15s;
+}
+
+.ca-toggle-pass:hover {
+  color: #6b7280;
+}
+
+/* Submit — matches landing page auth-submit */
+.ca-submit {
+  width: 100%;
+  padding: 0.7rem;
+  margin-top: 0.15rem;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: #16a34a;
+  cursor: pointer;
+  box-shadow: 0 14px 34px rgba(22, 163, 74, 0.55);
+  font-family: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ca-submit:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 40px rgba(22, 163, 74, 0.7);
+}
+
+.ca-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Footer */
+.ca-footer {
+  margin: 1.1rem 0 0;
+  font-size: 0.85rem;
+  color: #6b7280;
+  text-align: center;
+}
+
+.ca-footer-link {
+  color: #111827;
+  text-decoration: underline;
+}
+
+.ca-footer-link:hover {
+  color: #111827;
+}
+
+@keyframes caFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
