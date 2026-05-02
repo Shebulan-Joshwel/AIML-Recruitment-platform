@@ -1,3 +1,5 @@
+// Resume visibility controls and expand panel added
+
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getStoredUser, clearAuth, getResumes, createResume, getActiveJobs, applyToJob, getMyJobApplications, getMyInterviews, getMyJobMatch } from '../services/api'
