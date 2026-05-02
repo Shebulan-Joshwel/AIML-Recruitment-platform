@@ -1,4 +1,5 @@
 // Resume visibility controls and expand panel added
+// Analytics tab: monthly views bar chart and status breakdown
 
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
