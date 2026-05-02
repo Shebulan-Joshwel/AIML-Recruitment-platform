@@ -2,6 +2,7 @@
 // Analytics tab: monthly views bar chart and status breakdown
 // Per-resume performance table added to analytics tab
 // Certificates tab with credential cards and verification status
+// Final styling pass and responsive fixes
 
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
